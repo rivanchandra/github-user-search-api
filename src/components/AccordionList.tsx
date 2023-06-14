@@ -6,7 +6,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { CardList } from './CardList';
 
-export const AccordionList = () => {
+
+export const AccordionList = (props:any) => {
   return(
     <Accordion TransitionProps={{ unmountOnExit: true }}>
       <AccordionSummary
@@ -15,7 +16,7 @@ export const AccordionList = () => {
         id="panel1a-header"
         className="accordion"
       >
-        <Typography>Accordion 1</Typography>
+        <Typography>{props.name}</Typography>
       </AccordionSummary>
       <AccordionDetails>
 
