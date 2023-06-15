@@ -8,8 +8,11 @@ export const CardList = (props:any) => {
     <Card>
       <CardActionArea>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom variant="body1" component="div">
             {props.name}
+          </Typography>
+          <Typography gutterBottom variant="body2" component="div">
+            {props.description}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {props.star}
