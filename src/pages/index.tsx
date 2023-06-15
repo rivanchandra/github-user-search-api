@@ -14,17 +14,30 @@ interface Users {
 export default function Home() {
   const [searchText, setSearchText] = useState<string>('');
   const [list, setList] = useState<Users[]>([]);
+  const [accordionOpen, setAccordionOpen] = useState<boolean[]>([]);
+  const [searchLoading, setSearchLoading] = useState<boolean>(false);
 
   const handleChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
   }
 
   const searchFunction = async () => {
+    setSearchLoading(true);
     const fetchedUsers = await fetchUser(searchText);
     if (fetchedUsers !== undefined) {
       setList(fetchedUsers);
+      setAccordionOpen(new Array(fetchedUsers.length).fill(false));
+      setSearchLoading(false);
     }
   }
+
+  const handleAccordionToggle = (index:any) => {
+    setAccordionOpen((prevState) => {
+      const updatedState = [...prevState];
+      updatedState[index] = !updatedState[index];
+      return updatedState;
+    });
+  };
 
   return (
     <Container maxWidth="md">
@@ -34,6 +47,7 @@ export default function Home() {
             searchText={searchText}
             handleChangeSearch={handleChangeSearch}
             searchFunction={searchFunction}
+            searchLoading={searchLoading}
           />
         </Grid>
         <Grid item xs={12}>
@@ -43,6 +57,8 @@ export default function Home() {
                 key={`list-${index}`}
                 id={index}
                 name={listData.login}
+                handleAccordionToggle={handleAccordionToggle}
+                accordionOpen={accordionOpen}
               />
             )
           })}

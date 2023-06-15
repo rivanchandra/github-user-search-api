@@ -11,6 +11,7 @@ import { fetchRepos } from '@/pages/api/github';
 interface Repository {
   id: number;
   name: string;
+  description:string;
   stargazers_count:number;
 }
 
@@ -18,6 +19,8 @@ export const AccordionList = (props:any) => {
   const [repoList, setRepoList] = useState<Repository[]>([]);
 
   const handleChange = async (event: React.SyntheticEvent, newExpanded: boolean) => {
+    props.handleAccordionToggle(props.id)
+
     if(newExpanded === true) {
       const fetchedRepos = await fetchRepos(props.name);
       if (fetchedRepos !== undefined) {
@@ -27,7 +30,7 @@ export const AccordionList = (props:any) => {
   }
 
   return(
-    <Accordion TransitionProps={{ unmountOnExit: true }} onChange={handleChange}>
+    <Accordion TransitionProps={{ unmountOnExit: true }} expanded={props.accordionOpen[props.id]} onChange={handleChange} >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
@@ -43,6 +46,7 @@ export const AccordionList = (props:any) => {
               key={`repo-${index}`}
               name={repo.name}
               star={repo.stargazers_count}
+              description={repo.description}
             />
           )
         })}
