@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent } from "react";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 
@@ -9,7 +9,6 @@ import { fetchUser } from "./api/github";
 interface Users {
   id:number;
   login: string;
-  // Add other properties as needed
 }
 
 export default function Home() {
@@ -42,6 +41,7 @@ export default function Home() {
             return (
               <AccordionList 
                 key={`list-${index}`}
+                id={index}
                 name={listData.login}
               />
             )
