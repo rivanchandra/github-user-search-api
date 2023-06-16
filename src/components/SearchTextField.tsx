@@ -15,6 +15,13 @@ interface SearchTextFieldProps {
 }
 
 export const SearchTextField: React.FC<SearchTextFieldProps> = (props) => {
+
+  const handleKeyDown = (e:any) => {
+    if (e.key === 'Enter' && props.searchText !== '') {
+      props.searchFunction();
+    }
+  }
+
   return(
     <FormControl variant="standard" fullWidth >
       <TextField
@@ -22,13 +29,14 @@ export const SearchTextField: React.FC<SearchTextFieldProps> = (props) => {
         variant="outlined"
         value={props.searchText}
         onChange={props.handleChangeSearch}
+        onKeyDown={handleKeyDown}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
               {props.searchLoading?
                 <CircularProgress size={18}/>
               :
-                <IconButton color="primary" aria-label="upload picture" component="label" onClick={props.searchFunction}>
+                <IconButton color="primary" aria-label="upload picture" component="label" onClick={props.searchFunction} disabled={props.searchText === ''}>
                   <SearchIcon />
                 </IconButton>
               }
