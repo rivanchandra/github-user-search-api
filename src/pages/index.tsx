@@ -2,6 +2,10 @@ import React, { useState, ChangeEvent } from "react";
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Stack from '@mui/material/Stack';
+
 import { AccordionList } from "@/components/AccordionList";
 import { SearchTextField } from "@/components/SearchTextField";
 import { fetchUser } from "./api/github";
@@ -11,6 +15,8 @@ interface Users {
   login: string;
 }
 
+let myTimeout:any;
+
 export default function Home() {
   const [searchText, setSearchText] = useState<string>('');
   const [list, setList] = useState<Users[]>([]);
@@ -18,12 +24,21 @@ export default function Home() {
   const [searchLoading, setSearchLoading] = useState<boolean>(false);
 
   const handleChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchText(event.target.value);
+    const searchTerm = event.target.value;
+
+    setSearchText(searchTerm);
+
+    clearTimeout(myTimeout);
+    
+    if(searchTerm !== '')
+    {
+      myTimeout = setTimeout(() => {searchFunction(searchTerm)}, 2000);
+    }
   }
 
-  const searchFunction = async () => {
+  const searchFunction = async (searchTerm: string = '') => {
     setSearchLoading(true);
-    const fetchedUsers = await fetchUser(searchText);
+    const fetchedUsers = await fetchUser(searchTerm);
     if (fetchedUsers !== undefined) {
       setList(fetchedUsers);
       setAccordionOpen(new Array(fetchedUsers.length).fill(false));
