@@ -4,6 +4,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import LinearProgress from '@mui/material/LinearProgress';
 
 import { CardList } from './CardList';
 import { fetchRepos } from '@/pages/api/github';
@@ -13,18 +14,23 @@ interface Repository {
   name: string;
   description:string;
   stargazers_count:number;
+  html_url:string;
 }
 
 export const AccordionList = (props:any) => {
   const [repoList, setRepoList] = useState<Repository[]>([]);
+  const [cardLoading, setCardLoading] = useState<boolean>(false);
 
   const handleChange = async (event: React.SyntheticEvent, newExpanded: boolean) => {
     props.handleAccordionToggle(props.id)
 
     if(newExpanded === true) {
+      setCardLoading(true);
       const fetchedRepos = await fetchRepos(props.name);
       if (fetchedRepos !== undefined) {
+        console.log('fetchedRepos', fetchedRepos);
         setRepoList(fetchedRepos);
+        setCardLoading(false);
       }
     }
   }
@@ -40,16 +46,22 @@ export const AccordionList = (props:any) => {
         <Typography>{props.name}</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        {repoList && repoList.map((repo, index)=> {
-          return (
-            <CardList 
-              key={`repo-${index}`}
-              name={repo.name}
-              star={repo.stargazers_count}
-              description={repo.description}
-            />
-          )
-        })}
+        {cardLoading?
+          <LinearProgress />
+          :
+          repoList && repoList.map((repo, index)=> {
+            return (
+              <div onClick={() => window.open(repo.html_url, "_blank")} key={`repo-${index}`}>
+                <CardList
+                  key={`repo-${index}`}
+                  name={repo.name}
+                  star={repo.stargazers_count}
+                  description={repo.description}
+                />
+              </div>
+            )
+          })
+        }
       </AccordionDetails>
     </Accordion>
   )
