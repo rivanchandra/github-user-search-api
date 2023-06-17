@@ -30,6 +30,7 @@ export const SearchTextField: React.FC<SearchTextFieldProps> = (props) => {
         value={props.searchText}
         onChange={props.handleChangeSearch}
         onKeyDown={handleKeyDown}
+        placeholder="Type any name here..."
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
