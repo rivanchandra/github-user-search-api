@@ -4,7 +4,7 @@ import { CardActionArea } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 
-import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarIcon from '@mui/icons-material/Star';
 
 import Badge, { BadgeProps } from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
@@ -20,7 +20,7 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 
 export const CardList = (props:any) => {
   return(
-    <Card style={{marginBottom:'10px'}}>
+    <Card className='card-list'>
       <CardActionArea>
         <CardContent>
           <Grid container spacing={2}>
@@ -33,8 +33,8 @@ export const CardList = (props:any) => {
               </Typography>
             </Grid>
             <Grid item xs={1}>
-              <StyledBadge badgeContent={props.star} color="primary" showZero>
-                <StarBorderIcon />
+              <StyledBadge badgeContent={props.star} showZero>
+                <StarIcon />
               </StyledBadge>
             </Grid>
           </Grid>
