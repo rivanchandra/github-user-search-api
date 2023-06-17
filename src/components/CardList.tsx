@@ -20,7 +20,7 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 
 export const CardList = (props:any) => {
   return(
-    <Card className='card-list'>
+    <Card style={{background: '#e0e0e0', marginBottom: '10px'}}>
       <CardActionArea>
         <CardContent>
           <Grid container spacing={2}>

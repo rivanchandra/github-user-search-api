@@ -41,13 +41,13 @@ export const AccordionList = (props:any) => {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
-        className="accordion"
+        style={{background:'#f2f2f2'}}
       >
         <Typography>{props.name}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         {cardLoading?
-          <LinearProgress />
+          <LinearProgress color="inherit"/>
           :
           repoList && repoList.map((repo, index)=> {
             return (
