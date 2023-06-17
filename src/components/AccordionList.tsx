@@ -6,6 +6,9 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LinearProgress from '@mui/material/LinearProgress';
 
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+
 import { CardList } from './CardList';
 import { fetchRepos } from '@/pages/api/github';
 
@@ -35,6 +38,33 @@ export const AccordionList = (props:any) => {
     }
   }
 
+  const RepoListResult = () => {
+    return (
+      <>
+        {
+        repoList && repoList.length > 0?
+          repoList.map((repo, index)=> {
+            return (
+              <div onClick={() => window.open(repo.html_url, "_blank")} key={`repo-${index}`}>
+                <CardList
+                  key={`repo-${index}`}
+                  name={repo.name}
+                  star={repo.stargazers_count}
+                  description={repo.description}
+                />
+              </div>
+            )
+          })
+          :
+          <Alert severity="info">
+            <AlertTitle>Info</AlertTitle>
+            Sorry, we can not find the repositories
+          </Alert>
+        }
+      </>
+    )
+  }
+
   return(
     <Accordion TransitionProps={{ unmountOnExit: true }} expanded={props.accordionOpen[props.id]} onChange={handleChange} >
       <AccordionSummary
@@ -49,18 +79,7 @@ export const AccordionList = (props:any) => {
         {cardLoading?
           <LinearProgress color="inherit"/>
           :
-          repoList && repoList.map((repo, index)=> {
-            return (
-              <div onClick={() => window.open(repo.html_url, "_blank")} key={`repo-${index}`}>
-                <CardList
-                  key={`repo-${index}`}
-                  name={repo.name}
-                  star={repo.stargazers_count}
-                  description={repo.description}
-                />
-              </div>
-            )
-          })
+          <RepoListResult />
         }
       </AccordionDetails>
     </Accordion>

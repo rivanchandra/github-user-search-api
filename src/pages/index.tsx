@@ -22,6 +22,7 @@ export default function Home() {
   const [list, setList] = useState<Users[]>([]);
   const [accordionOpen, setAccordionOpen] = useState<boolean[]>([]);
   const [searchLoading, setSearchLoading] = useState<boolean>(false);
+  const [isFetch, setIsFetch] = useState<boolean>(false);
 
   const handleChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const searchTerm = event.target.value;
@@ -34,6 +35,10 @@ export default function Home() {
     {
       myTimeout = setTimeout(() => {searchFunction(searchTerm)}, 2000);
     }
+    else
+    {
+      setIsFetch(false)
+    }
   }
 
   const searchFunction = async (searchTerm: string = '') => {
@@ -43,6 +48,7 @@ export default function Home() {
       setList(fetchedUsers);
       setAccordionOpen(new Array(fetchedUsers.length).fill(false));
       setSearchLoading(false);
+      setIsFetch(true);
     }
   }
 
@@ -66,7 +72,13 @@ export default function Home() {
           />
         </Grid>
         <Grid item xs={12}>
-          {list.map((listData, index) => {
+          {isFetch && list.length === 0?
+            <Alert severity="info">
+              <AlertTitle>Info</AlertTitle>
+              Sorry, we can not find this user — <strong>{searchText}</strong>
+            </Alert>
+          :
+          list.map((listData, index) => {
             return (
               <AccordionList 
                 key={`list-${index}`}
